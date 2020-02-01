@@ -1,0 +1,22 @@
+My experiences with snapcraft
+
+ * As snapcraft doesn't really use snapshotting in the vm, it happens from time to time that outdated artifacts are used dangerous.
+  * This might even lead to errors about a directory which doesn't exist anymore, but that directory is from another package and not the one which I want to build now!
+  * For the same reason it sometimes happens that packages are used for building which are not defined in the snapcraft.yaml anymore!
+  * I wish snapcraft would use docker and it's cache feature for building up the environment step-by-step
+ * for my snapcraft, I need few extra .deb files there's no way to add them to the packages list, so I wrote a plugin. But I can only run one plugin per part so that this also doesn't work nicely. for example, some of these files need also be staged but staging again ticks differently
+ * I see errors about directories which should not existing. But I can't find a documentation about proper package structure
+ * building qt5 is difficult, qt4 is even worse. They internally use plugins which by default are searched in the host's filesystem. for now, the qt problems are not solved completely
+ * my snapcraft.yaml has the path /something/snap/snap/snapcraft.yaml, because otherwise I had weird errors. I have to exec snapcraft from /something/snap/. I can also run it from /something/snap/snap/, but then I see different errors, which is weird
+ * very recently, I did a snapcraft clean. after that, the local plugin wasn't found anymore and I had to move it from /something/snap/snap/snap/plugins/ to /something/snap/snap/plugins/. This is not too bad, but I would hope for a more stable interface. I didn't even see that there was an update..
+
+
+
+==
+The 'snap' directory is meant specifically for snapcraft, but it contains the following non-snapcraft-related paths, which is unsupported and will cause unexpected behavior:
+- .git
+  [..]
+If you must store these files within the 'snap' directory, move them to 'snap/local', which is ignored by snapcraft.
+
+sorry, but for obvious reasons, I can't move the .git directory..
+
