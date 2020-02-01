@@ -1,0 +1,4 @@
+
+# from the parent directory, so that this file is "snap/howto.txt"
+
+snapcraft --use-lxd

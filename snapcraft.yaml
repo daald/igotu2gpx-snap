@@ -1,0 +1,75 @@
+name: my-snap-name # you probably want to 'snapcraft register <name>'
+base: core18 # the base snap is the execution environment for this snap
+version: '0.1' # just for humans, typically '1.2+git' or '1.3.2'
+summary: Single-line elevator pitch for your amazing snap # 79 char long summary
+description: |
+  This is my-snap's description. You have a paragraph or two to tell the
+  most important story about your snap. Keep it under 100 words though,
+  we live in tweetspace and your description wants to look good in the snap
+  store.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: devmode # use 'strict' once you have the right plugs and slots
+
+parts:
+  my-part:
+    # See 'snapcraft plugins'
+    plugin: extradebs
+    extra-debs:
+      - 3rdParty/deb/other/libgps20_3.9-3_amd64.deb
+      - 3rdParty/deb/other/libqextserialport1_1.2.0~rc1+git7-g3be3fbf-1_amd64.deb
+      - 3rdParty/deb/other/libqtlocation1_1.2.0-3ubuntu5_amd64.deb
+      - 3rdParty/deb/other/libquazip0_0.6.2-0ubuntu1_amd64.deb
+      - 3rdParty/deb/other/libshp1_1.2.10-7_amd64.deb
+
+      - 3rdParty/deb/marble/libastro1_4:4.13.0-0ubuntu1_amd64.deb
+      - 3rdParty/deb/marble/libastro-dev_4:4.13.0-0ubuntu1_amd64.deb
+      - 3rdParty/deb/marble/libmarble-dev_4:4.13.0-0ubuntu1_amd64.deb
+      - 3rdParty/deb/marble/libmarblewidget18_4:4.13.0-0ubuntu1_amd64.deb
+      - 3rdParty/deb/marble/marble-data_4:4.13.0-0ubuntu1_all.deb
+      - 3rdParty/deb/marble/marble-plugins_4:4.13.0-0ubuntu1_amd64.deb
+
+    build-packages:
+      #- libmarble-dev=4:4.13.0-0ubuntu1 depends on
+      - libqtcore4
+      - libqtgui4
+      - libqt4-dev
+
+      #- libmarblewidget18=4:4.13.0-0ubuntu1 depends on
+      - libphonon4
+      - libqt4-dbus
+      - libqt4-declarative
+      - libqt4-network
+      - libqt4-script
+      - libqt4-svg
+      - libqt4-xml
+      #- libqtcore4
+      #- libqtgui4
+      - libqtwebkit4
+      - phonon
+
+      #- marble-plugins=4:4.13.0-0ubuntu1 depends on
+      #- libphonon4
+      #- libqextserialport1
+      #- libqt4-declarative
+      #- libqt4-network
+      #- libqt4-script
+      - libqt4-sql
+      #- libqt4-svg
+      #- libqt4-xml
+      #- libqtcore4
+      #- libqtgui4
+      #- libqtwebkit4
+      #- phonon
+      - libwlocate0
+
+      #- libgps20 depends on
+      - libbluetooth3
+      - libusb-1.0-0
+
+      #- libastro-dev=4:4.13.0-0ubuntu1 has no extra dependencies
+      #- libastro1=4:4.13.0-0ubuntu1 has no extra dependencies
+      #- marble-data=4:4.13.0-0ubuntu1 has no extra dependencies
+      #- libqtlocation1  # this is also an old package
+      #- libquazip0  # this is also an old package
+      #- libshp1  # this is also an old package
