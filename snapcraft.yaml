@@ -20,7 +20,11 @@ apps:
     - x11
     environment:
       QT_PLUGIN_PATH: "$SNAP/usr/lib/x86_64-linux-gnu/qt4/plugins/"
-      MARBLE_DATA_PATH: "$SNAP/usr/share/kde4/apps/marble/data"
+      #MARBLE_PLUGIN_PATH: "$SNAP/usr/lib/kde4/plugins/marble/18"
+      #MARBLE_DATA_PATH: "$SNAP/usr/share/kde4/apps/marble/data"  #"Invalid MarbleDataPath "/snap/igotu/x33/usr/share/kde4/apps/marble/data/marble". Using "" instead."
+      #MARBLE_DATA_PATH: "$SNAP/usr/share/kde4/apps/marble"       #"Invalid MarbleDataPath "/snap/igotu/x34/usr/share/kde4/apps/marble/marble". Using "" instead."
+      MARBLE_DATA_PATH: "$SNAP/usr/share/kde4/apps"   # path accepted but access then goes to /snap/igotu/x35/usr/share/kde4/apps/marble/bitmaps instead of /snap/igotu/x35/usr/share/kde4/apps/marble/data/bitmaps
+      MARBLE_PLUGIN_PATH: "$SNAP/usr/lib/kde4/plugins"
       LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/local/lib:$SNAP/usr/lib/x86_64-linux-gnu/
   igotu2gpx:
     command: usr/local/bin/igotu2gpx
@@ -187,21 +191,21 @@ parts:
       echo "patch"
       env
       cd "${SNAPCRAFT_PART_SRC}"
-      patch -Np1 <"${SNAPCRAFT_PROJECT_DIR}/marbledatadir.patch"
+      patch -Np1 <"${SNAPCRAFT_PROJECT_DIR}/local/marbledatadir.patch"
       echo "extra build-packages"
       cd "${SNAPCRAFT_PROJECT_DIR}"
       dpkg -i \
-        3rdParty/deb/other/libgps20_3.9-3_amd64.deb \
-        3rdParty/deb/other/libqextserialport1_1.2.0~rc1+git7-g3be3fbf-1_amd64.deb \
-        3rdParty/deb/other/libqtlocation1_1.2.0-3ubuntu5_amd64.deb \
-        3rdParty/deb/other/libquazip0_0.6.2-0ubuntu1_amd64.deb \
-        3rdParty/deb/other/libshp1_1.2.10-7_amd64.deb \
-        3rdParty/deb/marble/libastro1_4:4.13.0-0ubuntu1_amd64.deb \
-        3rdParty/deb/marble/libastro-dev_4:4.13.0-0ubuntu1_amd64.deb \
-        3rdParty/deb/marble/libmarble-dev_4:4.13.0-0ubuntu1_amd64.deb \
-        3rdParty/deb/marble/libmarblewidget18_4:4.13.0-0ubuntu1_amd64.deb \
-        3rdParty/deb/marble/marble-data_4:4.13.0-0ubuntu1_all.deb \
-        3rdParty/deb/marble/marble-plugins_4:4.13.0-0ubuntu1_amd64.deb
+        local/deb/other/libgps20_3.9-3_amd64.deb \
+        local/deb/other/libqextserialport1_1.2.0~rc1+git7-g3be3fbf-1_amd64.deb \
+        local/deb/other/libqtlocation1_1.2.0-3ubuntu5_amd64.deb \
+        local/deb/other/libquazip0_0.6.2-0ubuntu1_amd64.deb \
+        local/deb/other/libshp1_1.2.10-7_amd64.deb \
+        local/deb/marble/libastro1_4:4.13.0-0ubuntu1_amd64.deb \
+        local/deb/marble/libastro-dev_4:4.13.0-0ubuntu1_amd64.deb \
+        local/deb/marble/libmarble-dev_4:4.13.0-0ubuntu1_amd64.deb \
+        local/deb/marble/libmarblewidget18_4:4.13.0-0ubuntu1_amd64.deb \
+        local/deb/marble/marble-data_4:4.13.0-0ubuntu1_all.deb \
+        local/deb/marble/marble-plugins_4:4.13.0-0ubuntu1_amd64.deb
 
     override-stage: |
       echo "extra stage-packages"
@@ -209,15 +213,15 @@ parts:
       cd "${SNAPCRAFT_PROJECT_DIR}"
       test -d "${SNAPCRAFT_STAGE}"
       for f in \
-        3rdParty/deb/other/libgps20_3.9-3_amd64.deb \
-        3rdParty/deb/other/libqextserialport1_1.2.0~rc1+git7-g3be3fbf-1_amd64.deb \
-        3rdParty/deb/other/libqtlocation1_1.2.0-3ubuntu5_amd64.deb \
-        3rdParty/deb/other/libquazip0_0.6.2-0ubuntu1_amd64.deb \
-        3rdParty/deb/other/libshp1_1.2.10-7_amd64.deb \
-        3rdParty/deb/marble/libastro1_4:4.13.0-0ubuntu1_amd64.deb \
-        3rdParty/deb/marble/libmarblewidget18_4:4.13.0-0ubuntu1_amd64.deb \
-        3rdParty/deb/marble/marble-data_4:4.13.0-0ubuntu1_all.deb \
-        3rdParty/deb/marble/marble-plugins_4:4.13.0-0ubuntu1_amd64.deb \
+        local/deb/other/libgps20_3.9-3_amd64.deb \
+        local/deb/other/libqextserialport1_1.2.0~rc1+git7-g3be3fbf-1_amd64.deb \
+        local/deb/other/libqtlocation1_1.2.0-3ubuntu5_amd64.deb \
+        local/deb/other/libquazip0_0.6.2-0ubuntu1_amd64.deb \
+        local/deb/other/libshp1_1.2.10-7_amd64.deb \
+        local/deb/marble/libastro1_4:4.13.0-0ubuntu1_amd64.deb \
+        local/deb/marble/libmarblewidget18_4:4.13.0-0ubuntu1_amd64.deb \
+        local/deb/marble/marble-data_4:4.13.0-0ubuntu1_all.deb \
+        local/deb/marble/marble-plugins_4:4.13.0-0ubuntu1_amd64.deb \
       ; do
         dpkg -x $f "${SNAPCRAFT_STAGE}"
       done
@@ -228,6 +232,8 @@ parts:
       echo "extra prime"
       set -x
       [ -n "${SNAPCRAFT_PRIME}" ]
-      tar cC "${SNAPCRAFT_STAGE}" /usr/lib/kde4/plugins/marble/18/ | tar xC "${SNAPCRAFT_PRIME}"
-      tar cC "${SNAPCRAFT_STAGE}" /usr/share/kde4/apps/marble/data/ | tar xC "${SNAPCRAFT_PRIME}"
+      tar cC "${SNAPCRAFT_STAGE}" /usr/lib/kde4/plugins/marble/ | tar xC "${SNAPCRAFT_PRIME}"
+      tar cC "${SNAPCRAFT_STAGE}" /usr/share/kde4/apps/marble/ | tar xC "${SNAPCRAFT_PRIME}"
+      # obviously, MarbleDirs::setMarbleDataPath is for user-schema path style only, which is slightly different unfortunately..
+      mv -v "${SNAPCRAFT_PRIME}/usr/share/kde4/apps/marble/data/"* "${SNAPCRAFT_PRIME}/usr/share/kde4/apps/marble/"
       [ -f "${SNAPCRAFT_PRIME}/usr/lib/kde4/plugins/marble/18/PostalCode.so" ]
