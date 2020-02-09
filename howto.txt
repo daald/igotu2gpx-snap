@@ -2,3 +2,24 @@
 # from the parent directory, so that this file is "snap/howto.txt"
 
 snapcraft --use-lxd
+
+
+
+
+--
+
+debugging:
+
+snap run --trace-exec igotu.igotugui
+snap run --strace igotu.igotugui
+
+
+
+snapcraft  --use-lxd --debug
+snap install --dangerous snap/igotu_0+git.5043ec6-dirty_amd64.snap  --devmode
+snap run --strace igotu.igotugui >log 2>log2
+
+
+daniel@legolas:/daten/Projects/oss_community/igotu/2020-build/build-experiments-1804bionic/snap$ grep libmarblewidget log2 | grep -v ENOENT
+daniel@legolas:/daten/Projects/oss_community/igotu/2020-build/build-experiments-1804bionic/snap$ find /snap/igotu/ -name libmarblewidget.so.18
+/snap/igotu/x8/usr/lib/libmarblewidget.so.18

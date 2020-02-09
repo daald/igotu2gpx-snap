@@ -1,0 +1,15 @@
+--- src/src/lib/igotu/paths.cpp_orig	2020-02-09 01:37:49.285438282 +0000
++++ src/src/lib/igotu/paths.cpp	2020-02-09 01:41:12.904214377 +0000
+@@ -224,7 +224,11 @@
+ QString Paths::mainDataDirectory()
+ {
+     QString result;
+-#if defined(Q_OS_MAC)
++#if defined(Q_OS_LINUX)
++    if (getenv("MARBLE_DATA_PATH") != NULL) {
++        result = QLatin1String(getenv("MARBLE_DATA_PATH"));
++    }
++#elif defined(Q_OS_MAC)
+     result = relativeToBaseDirectory(QStringList(QLatin1String("/Resources")),
+             QStringList()).value(0);
+ #elif defined(Q_OS_WIN32)

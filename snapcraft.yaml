@@ -1,11 +1,11 @@
 name: igotu
 base: core18 # the base snap is the execution environment for this snap
-version: bzr-227
+version: 0.3.90
 title: GUI for i-gotU USB GPS travel logger
 summary: MobileAction i-gotU USB GPS travel logger
 description: |
     MobileAction i-gotU USB GPS travel logger
-license: unknown
+license: GPL-3.0
 
 grade: devel
 #confinement: strict
@@ -19,7 +19,9 @@ apps:
     - raw-usb
     - x11
     environment:
-      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/local/lib
+      QT_PLUGIN_PATH: "$SNAP/usr/lib/x86_64-linux-gnu/qt4/plugins/"
+      MARBLE_DATA_PATH: "$SNAP/usr/share/kde4/apps/marble/data"
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/local/lib:$SNAP/usr/lib/x86_64-linux-gnu/
   igotu2gpx:
     command: usr/local/bin/igotu2gpx
     plugs:
@@ -37,6 +39,7 @@ parts:
     qt-version: qt4
 
     build-packages:
+      - bash  # just to trigger rebuild
       - libqtgui4
       - pkg-config
       - ctags
@@ -46,85 +49,9 @@ parts:
       - libboost-program-options-dev
       - libusb-dev
 
-    stage-packages:
-      # to be cleaned up and marble to be added
-      - libastro1
-      - libasyncns0
-      - libaudio2
-      - libflac8
-      - libfontconfig1
-      - libfreetype6
-      - libgl1
-      - libglvnd0
-      - libglx0
-      - libgstreamer-plugins-base1.0-0
-      - libgstreamer1.0-0
-      - libice6
-      - libicu60
-      - libjpeg-turbo8
-      - libogg0
-      - liborc-0.4-0
-      - libphonon4
-      - libpng16-16
-      - libpulse-mainloop-glib0
-      - libpulse0
-      - libqt4-declarative
-      - libqt4-network
-      - libqt4-opengl
-      - libqt4-script
-      - libqt4-sql
-      - libqt4-svg
-      - libqt4-test
-      - libqt4-xml
-      - libqt4-xmlpatterns
-      - libqtcore4
-      - libqtdbus4
-      - libqtgui4
-      - libqtwebkit4
-      - libsm6
-      - libsndfile1
-      - libusb-0.1-4
-      - libvorbis0a
-      - libvorbisenc2
-      - libx11-6
-      - libxau6
-      - libxcb1
-      - libxdmcp6
-      - libxext6
-      - libxi6
-      - libxml2
-      - libxrender1
-      - libxslt1.1
-      - libxt6
-      # [...]
-      # the following declarations must point to the .deb files
-      - libastro1=4:4.13.0-0ubuntu1
-      - libmarblewidget18=4:4.13.0-0ubuntu1
-      - marble-data=4:4.13.0-0ubuntu1
-      - marble-plugins=4:4.13.0-0ubuntu1
-
-  extradebs:
-    # See 'snapcraft plugins'
-    plugin: extradebs
-
-    extra-debs:
-      - 3rdParty/deb/other/libgps20_3.9-3_amd64.deb
-      - 3rdParty/deb/other/libqextserialport1_1.2.0~rc1+git7-g3be3fbf-1_amd64.deb
-      - 3rdParty/deb/other/libqtlocation1_1.2.0-3ubuntu5_amd64.deb
-      - 3rdParty/deb/other/libquazip0_0.6.2-0ubuntu1_amd64.deb
-      - 3rdParty/deb/other/libshp1_1.2.10-7_amd64.deb
-
-      - 3rdParty/deb/marble/libastro1_4:4.13.0-0ubuntu1_amd64.deb
-      - 3rdParty/deb/marble/libastro-dev_4:4.13.0-0ubuntu1_amd64.deb
-      - 3rdParty/deb/marble/libmarble-dev_4:4.13.0-0ubuntu1_amd64.deb
-      - 3rdParty/deb/marble/libmarblewidget18_4:4.13.0-0ubuntu1_amd64.deb
-      - 3rdParty/deb/marble/marble-data_4:4.13.0-0ubuntu1_all.deb
-      - 3rdParty/deb/marble/marble-plugins_4:4.13.0-0ubuntu1_amd64.deb
-
-    build-packages:
       #- libmarble-dev=4:4.13.0-0ubuntu1 depends on
       - libqtcore4
-      - libqtgui4
+      #- libqtgui4
       - libqt4-dev
 
       #- libmarblewidget18=4:4.13.0-0ubuntu1 depends on
@@ -165,3 +92,142 @@ parts:
       #- libqtlocation1  # this is also an old package
       #- libquazip0  # this is also an old package
       #- libshp1  # this is also an old package
+
+    stage-packages:
+      # to be cleaned up and marble to be added
+      #- libastro1
+      #- libasyncns0
+      #- libaudio2
+      #- libflac8
+      #- libfontconfig1
+      #- libfreetype6
+      #- libgl1
+      #- libglvnd0
+      #- libglx0
+      #- libgstreamer-plugins-base1.0-0
+      #- libgstreamer1.0-0
+      #- libice6
+      #- libicu60
+      #- libjpeg-turbo8
+      #- libogg0
+      #- liborc-0.4-0
+      - libphonon4
+      #- libpng16-16
+      #- libpulse-mainloop-glib0
+      #- libpulse0
+      #- libqt4-declarative
+      #- libqt4-network
+      #- libqt4-opengl
+      #- libqt4-script
+      #- libqt4-sql
+      - libqt4-svg
+      #- libqt4-test
+      #- libqt4-xml
+      #- libqt4-xmlpatterns
+      - libqtcore4
+      #- libqtdbus4
+      - libqtgui4
+      - libqtwebkit4
+      #- libsm6
+      #- libsndfile1
+      #- libusb-0.1-4
+      #- libvorbis0a
+      #- libvorbisenc2
+      - libwlocate0
+      #- libx11-6
+      #- libxau6
+      #- libxcb1
+      #- libxdmcp6
+      #- libxext6
+      - libxi6
+      #- libxml2
+      #- libxrender1
+      #- libxslt1.1
+      #- libxt6
+      - libssl1.0.0
+      - libxcursor1
+      - libxinerama1
+      - libxrandr2
+      - libicu60
+      # [...]
+
+    prime:
+      - usr/lib/libmarblewidget.so.18
+      - usr/lib/libmarblewidget.so.0.17.97
+      - usr/lib/libastro.so.0.17.20
+      - usr/lib/libastro.so.1
+      - usr/lib/kde4/plugins/marble/18/*   # for some reason, this doesn't work
+      - usr/lib/x86_64-linux-gnu/qt4/plugins/*
+      - usr/lib/x86_64-linux-gnu/libXi.so.6.1.0
+      - usr/lib/x86_64-linux-gnu/libXi.so.6
+      - usr/lib/x86_64-linux-gnu/libXfixes.so.3.1.0
+      - usr/lib/x86_64-linux-gnu/libXfixes.so.3
+      - usr/lib/x86_64-linux-gnu/libXinerama.so.1.0.0
+      - usr/lib/x86_64-linux-gnu/libXinerama.so.1
+      - usr/lib/x86_64-linux-gnu/libXrandr.so.2.2.0
+      - usr/lib/x86_64-linux-gnu/libXrandr.so.2
+      - usr/lib/x86_64-linux-gnu/libicui18n.so.60.2
+      - usr/lib/x86_64-linux-gnu/libicui18n.so.60
+      - usr/lib/x86_64-linux-gnu/libgps.so.20.0.0
+      - usr/lib/x86_64-linux-gnu/libqextserialport.so.1.2.0
+      - usr/lib/x86_64-linux-gnu/libQtLocation.so.1.2.0
+      - usr/lib/x86_64-linux-gnu/libQtWebKit.so.4.10.2
+      - usr/lib/x86_64-linux-gnu/libquazip.so.0.6.2
+      - usr/lib/x86_64-linux-gnu/libshp.so.1.0.1
+      - "*"   # for some reason, this doesn't work
+
+    #override-build: |
+    #  snapcraftctl build
+    #  false
+
+    # see https://forum.snapcraft.io/t/scriptlets/4892
+    override-pull: |
+      snapcraftctl pull
+      set -x
+      echo "patch"
+      env
+      cd "${SNAPCRAFT_PART_SRC}"
+      patch -Np1 <"${SNAPCRAFT_PROJECT_DIR}/marbledatadir.patch"
+      echo "extra build-packages"
+      cd "${SNAPCRAFT_PROJECT_DIR}"
+      dpkg -i \
+        3rdParty/deb/other/libgps20_3.9-3_amd64.deb \
+        3rdParty/deb/other/libqextserialport1_1.2.0~rc1+git7-g3be3fbf-1_amd64.deb \
+        3rdParty/deb/other/libqtlocation1_1.2.0-3ubuntu5_amd64.deb \
+        3rdParty/deb/other/libquazip0_0.6.2-0ubuntu1_amd64.deb \
+        3rdParty/deb/other/libshp1_1.2.10-7_amd64.deb \
+        3rdParty/deb/marble/libastro1_4:4.13.0-0ubuntu1_amd64.deb \
+        3rdParty/deb/marble/libastro-dev_4:4.13.0-0ubuntu1_amd64.deb \
+        3rdParty/deb/marble/libmarble-dev_4:4.13.0-0ubuntu1_amd64.deb \
+        3rdParty/deb/marble/libmarblewidget18_4:4.13.0-0ubuntu1_amd64.deb \
+        3rdParty/deb/marble/marble-data_4:4.13.0-0ubuntu1_all.deb \
+        3rdParty/deb/marble/marble-plugins_4:4.13.0-0ubuntu1_amd64.deb
+
+    override-stage: |
+      echo "extra stage-packages"
+      set -ex
+      cd "${SNAPCRAFT_PROJECT_DIR}"
+      test -d "${SNAPCRAFT_STAGE}"
+      for f in \
+        3rdParty/deb/other/libgps20_3.9-3_amd64.deb \
+        3rdParty/deb/other/libqextserialport1_1.2.0~rc1+git7-g3be3fbf-1_amd64.deb \
+        3rdParty/deb/other/libqtlocation1_1.2.0-3ubuntu5_amd64.deb \
+        3rdParty/deb/other/libquazip0_0.6.2-0ubuntu1_amd64.deb \
+        3rdParty/deb/other/libshp1_1.2.10-7_amd64.deb \
+        3rdParty/deb/marble/libastro1_4:4.13.0-0ubuntu1_amd64.deb \
+        3rdParty/deb/marble/libmarblewidget18_4:4.13.0-0ubuntu1_amd64.deb \
+        3rdParty/deb/marble/marble-data_4:4.13.0-0ubuntu1_all.deb \
+        3rdParty/deb/marble/marble-plugins_4:4.13.0-0ubuntu1_amd64.deb \
+      ; do
+        dpkg -x $f "${SNAPCRAFT_STAGE}"
+      done
+      snapcraftctl stage
+
+    override-prime: |
+      snapcraftctl prime
+      echo "extra prime"
+      set -x
+      [ -n "${SNAPCRAFT_PRIME}" ]
+      tar cC "${SNAPCRAFT_STAGE}" /usr/lib/kde4/plugins/marble/18/ | tar xC "${SNAPCRAFT_PRIME}"
+      tar cC "${SNAPCRAFT_STAGE}" /usr/share/kde4/apps/marble/data/ | tar xC "${SNAPCRAFT_PRIME}"
+      [ -f "${SNAPCRAFT_PRIME}/usr/lib/kde4/plugins/marble/18/PostalCode.so" ]

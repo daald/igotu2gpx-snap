@@ -9,7 +9,9 @@ My experiences with snapcraft
  * building qt5 is difficult, qt4 is even worse. They internally use plugins which by default are searched in the host's filesystem. for now, the qt problems are not solved completely
  * my snapcraft.yaml has the path /something/snap/snap/snapcraft.yaml, because otherwise I had weird errors. I have to exec snapcraft from /something/snap/. I can also run it from /something/snap/snap/, but then I see different errors, which is weird
  * very recently, I did a snapcraft clean. after that, the local plugin wasn't found anymore and I had to move it from /something/snap/snap/snap/plugins/ to /something/snap/snap/plugins/. This is not too bad, but I would hope for a more stable interface. I didn't even see that there was an update..
-
+ * after snapcraft clean, I still get messages that the build step was skipped (lxd mode)
+ * the documentation is poor: what exactly happens in the prime stage? what do I have to do if I want some file _additionally_? why is there no link from the reference to the fileset page?
+ * if snapcraft fails with --debug, the exit code after exiting is 0
 
 
 ==
