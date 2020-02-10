@@ -13,7 +13,7 @@ confinement: devmode
 
 apps:
   igotugui:
-    command: usr/local/bin/igotugui
+    command: desktop-launch $SNAP/usr/local/bin/igotugui
     plugs:
     - hardware-observe
     - raw-usb
@@ -35,7 +35,32 @@ apps:
       LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/local/lib
 
 parts:
+  desktop-qt4:
+    build-packages:
+      - libqt4-dev
+      - dpkg-dev
+    make-parameters:
+      - FLAVOR=qt4
+    plugin: make
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: qt
+    stage-packages:
+      - libxkbcommon0
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libqtgui4
+      - libgdk-pixbuf2.0-0
+      - libqt4-svg # for loading icon themes which are svg
+      - appmenu-qt
+      - locales-all
+      - sni-qt
+
   app:
+    after: [desktop-qt4]
     source-type: bzr
     source: lp:igotu2gpx
     # expect to pull a 0.4 version rev. 227
@@ -233,7 +258,15 @@ parts:
       set -x
       [ -n "${SNAPCRAFT_PRIME}" ]
       tar cC "${SNAPCRAFT_STAGE}" /usr/lib/kde4/plugins/marble/ | tar xC "${SNAPCRAFT_PRIME}"
+      rm -rf "${SNAPCRAFT_PRIME}/usr/share/kde4/apps/marble/"  # it seems that sometimes prime is called without cleaning before
       tar cC "${SNAPCRAFT_STAGE}" /usr/share/kde4/apps/marble/ | tar xC "${SNAPCRAFT_PRIME}"
       # obviously, MarbleDirs::setMarbleDataPath is for user-schema path style only, which is slightly different unfortunately..
       mv -v "${SNAPCRAFT_PRIME}/usr/share/kde4/apps/marble/data/"* "${SNAPCRAFT_PRIME}/usr/share/kde4/apps/marble/"
+
+      # a sanity check
       [ -f "${SNAPCRAFT_PRIME}/usr/lib/kde4/plugins/marble/18/PostalCode.so" ]
+
+      # this is to fix the font problem, as described (but not solved) in https://forum.snapcraft.io/t/snapped-app-not-loading-fonts-on-fedora-and-arch/12484/5
+      # fontconfig, fontconfig-config and fonts-dejavu-core are not declared as stage-packages, but they are in the staging and prime folder - how comes???
+      #rm -rf "${SNAPCRAFT_PRIME}/etc/fonts/"
+      #find "${SNAPCRAFT_PRIME}" -name '*font*' -exec rm -rf \{\} +
