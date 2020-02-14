@@ -1,0 +1,10 @@
+docker run --rm -ti ubuntu
+
+     apt-get update
+     apt-get install equivs nano
+     mkdir x
+     cd x
+     equivs-control libgps20
+     nano libgps20
+     equivs-build libgps20
+

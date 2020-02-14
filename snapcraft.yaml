@@ -25,7 +25,7 @@ apps:
       #MARBLE_DATA_PATH: "$SNAP/usr/share/kde4/apps/marble"       #"Invalid MarbleDataPath "/snap/igotu/x34/usr/share/kde4/apps/marble/marble". Using "" instead."
       MARBLE_DATA_PATH: "$SNAP/usr/share/kde4/apps"   # path accepted but access then goes to /snap/igotu/x35/usr/share/kde4/apps/marble/bitmaps instead of /snap/igotu/x35/usr/share/kde4/apps/marble/data/bitmaps
       MARBLE_PLUGIN_PATH: "$SNAP/usr/lib/kde4/plugins"
-      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/local/lib:$SNAP/usr/lib/x86_64-linux-gnu/
+      LD_LIBRARY_PATH: $LD_LIBRARY_PATH:$SNAP/usr/local/lib:$SNAP/lib/x86_64-linux-gnu/:$SNAP/usr/lib/x86_64-linux-gnu/
   igotu2gpx:
     command: usr/local/bin/igotu2gpx
     plugs:
@@ -111,10 +111,6 @@ parts:
       #- phonon
       - libwlocate0
 
-      #- libgps20 depends on
-      - libbluetooth3
-      - libusb-1.0-0
-
       #- libastro-dev=4:4.13.0-0ubuntu1 has no extra dependencies
       #- libastro1=4:4.13.0-0ubuntu1 has no extra dependencies
       #- marble-data=4:4.13.0-0ubuntu1 has no extra dependencies
@@ -178,6 +174,7 @@ parts:
       - libxinerama1
       - libxrandr2
       - libicu60
+      - libusb-0.1-4  # weird, this should not be a dev package
       # [...]
 
     prime:
@@ -197,7 +194,8 @@ parts:
       - usr/lib/x86_64-linux-gnu/libXrandr.so.2
       - usr/lib/x86_64-linux-gnu/libicui18n.so.60.2
       - usr/lib/x86_64-linux-gnu/libicui18n.so.60
-      - usr/lib/x86_64-linux-gnu/libgps.so.20.0.0
+      #- usr/lib/x86_64-linux-gnu/libgps.so.20.0.0
+      - lib/x86_64-linux-gnu/libusb-0.1.so.4
       - usr/lib/x86_64-linux-gnu/libqextserialport.so.1.2.0
       - usr/lib/x86_64-linux-gnu/libQtLocation.so.1.2.0
       - usr/lib/x86_64-linux-gnu/libQtWebKit.so.4.10.2
@@ -220,7 +218,7 @@ parts:
       echo "extra build-packages"
       cd "${SNAPCRAFT_PROJECT_DIR}"
       dpkg -i \
-        local/deb/other/libgps20_3.9-3_amd64.deb \
+        local/deb/fake/libgps20_3.9-dummy_all.deb \
         local/deb/other/libqextserialport1_1.2.0~rc1+git7-g3be3fbf-1_amd64.deb \
         local/deb/other/libqtlocation1_1.2.0-3ubuntu5_amd64.deb \
         local/deb/other/libquazip0_0.6.2-0ubuntu1_amd64.deb \
@@ -238,7 +236,7 @@ parts:
       cd "${SNAPCRAFT_PROJECT_DIR}"
       test -d "${SNAPCRAFT_STAGE}"
       for f in \
-        local/deb/other/libgps20_3.9-3_amd64.deb \
+        local/deb/fake/libgps20_3.9-dummy_all.deb \
         local/deb/other/libqextserialport1_1.2.0~rc1+git7-g3be3fbf-1_amd64.deb \
         local/deb/other/libqtlocation1_1.2.0-3ubuntu5_amd64.deb \
         local/deb/other/libquazip0_0.6.2-0ubuntu1_amd64.deb \
