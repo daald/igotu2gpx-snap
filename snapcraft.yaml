@@ -1,6 +1,6 @@
 name: igotu
 base: core18 # the base snap is the execution environment for this snap
-version: 0.3.90
+version: 0.3.90+y2016
 title: GUI for i-gotU USB GPS travel logger
 summary: MobileAction i-gotU USB GPS travel logger
 description: |
@@ -215,6 +215,7 @@ parts:
       env
       cd "${SNAPCRAFT_PART_SRC}"
       patch -Np1 <"${SNAPCRAFT_PROJECT_DIR}/local/marbledatadir.patch"
+      patch -Np1 <"${SNAPCRAFT_PROJECT_DIR}/local/y2016.patch"
       echo "extra build-packages"
       cd "${SNAPCRAFT_PROJECT_DIR}"
       dpkg -i \

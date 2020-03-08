@@ -6,7 +6,7 @@
      QString result;
 -#if defined(Q_OS_MAC)
 +#if defined(Q_OS_LINUX)
-+    printf("envvar MARBLE_PLUGIN_PATH is %s\n", getenv("MARBLE_PLUGIN_PATH"));
++    printf("setMarblePluginPath(%s)\n", getenv("MARBLE_PLUGIN_PATH"));
 +    if (getenv("MARBLE_PLUGIN_PATH") != NULL) {
 +        result = QLatin1String(getenv("MARBLE_PLUGIN_PATH"));
 +    }
@@ -20,7 +20,7 @@
      QString result;
 -#if defined(Q_OS_MAC)
 +#if defined(Q_OS_LINUX)
-+    printf("envvar MARBLE_DATA_PATH is %s\n", getenv("MARBLE_DATA_PATH"));
++    printf("setMarbleDataPath(%s)\n", getenv("MARBLE_DATA_PATH"));
 +    if (getenv("MARBLE_DATA_PATH") != NULL) {
 +        result = QLatin1String(getenv("MARBLE_DATA_PATH"));
 +    }
